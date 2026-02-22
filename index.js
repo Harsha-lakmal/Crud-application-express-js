@@ -24,7 +24,7 @@ app.get('/employees', (req, res) => {
 })
 
 
-//get all >> is ok
+//get all >> is 
 
 
 app.get('/employee/:id', (req, res) => {
