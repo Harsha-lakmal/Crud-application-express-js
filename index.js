@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 })
 app.use(express.json());
 connection.connect()
-//get all employee...
+//get all employee
 app.get('/employees', (req, res) => {
   connection.query('SELECT * from employee', (error, result) => {
  if (error){
