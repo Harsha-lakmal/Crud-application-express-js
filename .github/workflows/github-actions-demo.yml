@@ -3,7 +3,7 @@ name: Deploy Express App to AWS
 on:
   push:
     branches:
-      - main  # ඔබ භාවිතා කරන branch එකේ නම (main හෝ master)
+      - main
 
 jobs:
   deploy:
@@ -20,17 +20,22 @@ jobs:
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          # App එක තියෙන folder එකට යන්න
+          # Load environment (IMPORTANT FIX)
+          source ~/.bashrc
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+          # Go to project folder
           cd /home/ubuntu/backend/Crud-application-express-js
           
-          # GitHub එකෙන් අලුත් code එක ගන්න
+          # Pull latest code
           git pull origin main
           
-          # Dependencies install කරන්න
+          # Install dependencies
           npm install --production
           
-          # PM2 මගින් App එක restart කරන්න (App ID = 0)
-          pm2 restart 0
+          # Restart app using name (safer than ID)
+          pm2 restart index
           
-          # PM2 status එක බලන්න
+          # Show status
           pm2 status
