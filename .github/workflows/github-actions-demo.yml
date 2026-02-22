@@ -1,0 +1,36 @@
+name: Deploy Express App to AWS
+
+on:
+  push:
+    branches:
+      - main  # ඔබ භාවිතා කරන branch එකේ නම (main හෝ master)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to AWS EC2 via SSH
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.HOST }}
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          # App එක තියෙන folder එකට යන්න
+          cd /home/ubuntu/backend/Crud-application-express-js
+          
+          # GitHub එකෙන් අලුත් code එක ගන්න
+          git pull origin main
+          
+          # Dependencies install කරන්න
+          npm install --production
+          
+          # PM2 මගින් App එක restart කරන්න (App ID = 0)
+          pm2 restart 0
+          
+          # PM2 status එක බලන්න
+          pm2 status

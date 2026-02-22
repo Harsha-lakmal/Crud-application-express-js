@@ -22,7 +22,9 @@ app.get('/employees', (req, res) => {
  })
 })
 })
-//get all >> working 
+
+
+//get all >> is ok
 
 
 app.get('/employee/:id', (req, res) => {
